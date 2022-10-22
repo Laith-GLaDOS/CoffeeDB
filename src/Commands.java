@@ -13,16 +13,20 @@ public class Commands {
           return "Bad arguments";
         return SET(commandAndArgs[1], commandAndArgs[2]);
 
+      case "DELETE":
+        if (commandAndArgs.length != 2)
+          return "Bad arguments";
+        return DELETE(commandAndArgs[1]);
+
       default:
         return "Command not found";
     }
   }
 
   public static String GET(String key) {
-    for (int i = 0; i < DataArray.data.size(); i++) {
+    for (int i = 0; i < DataArray.data.size(); i++)
       if (DataArray.data.get(i).key.equals(key))
         return DataArray.data.get(i).value;
-    }
 
     return "Key not found";
   }
@@ -35,5 +39,15 @@ public class Commands {
     DataArray.data.add(new KeyValueObject(key, value));
 
     return "Success";
+  }
+
+  public static String DELETE(String key) {
+    for (int i = 0; i < DataArray.data.size(); i++)
+      if (DataArray.data.get(i).key.equals(key)) {
+        DataArray.data.remove(i);
+        return "Success";
+      }
+
+    return "Key not found";
   }
 }
