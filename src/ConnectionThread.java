@@ -17,7 +17,9 @@ public class ConnectionThread extends Thread {
 
         OutputStream output = this.socket.getOutputStream();
         PrintWriter writer = new PrintWriter(output, true);
-        if (command == null) { // i have to do 2 ifs instead of using || cuz equals throws exception if null
+        if (command == null) {
+          // i have to do 2 ifs instead of using || cuz equals throws exception if null
+          // when command is null it means the socket has been terminated by the client
           socket.close();
           return;
         }
