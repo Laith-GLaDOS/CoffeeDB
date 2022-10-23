@@ -37,7 +37,7 @@ public class Commands {
     }
   }
 
-  public static String GET(String key) {
+  private static String GET(String key) {
     for (int i = 0; i < DataArray.data.size(); i++)
       if (DataArray.data.get(i).key.equals(key))
         return DataArray.data.get(i).type + " " + DataArray.data.get(i).value;
@@ -45,7 +45,7 @@ public class Commands {
     return "Key not found";
   }
 
-  public static String GETKEYS() {
+  private static String GETKEYS() {
     String keys = "";
     for (int i = 0; i < DataArray.data.size(); i++)
       keys += DataArray.data.get(i).key + (i != DataArray.data.size() - 1 ? ", " : "");
@@ -53,7 +53,7 @@ public class Commands {
     return keys;
   }
 
-  public static String SET(String key, String type, String value) {
+  private static String SET(String key, String type, String value) {
     boolean setInsteadOfAdd = false;
     int setIndex = 0;
 
@@ -125,7 +125,7 @@ public class Commands {
     return "Success";
   }
 
-  public static String DELETE(String key) {
+  private static String DELETE(String key) {
     for (int i = 0; i < DataArray.data.size(); i++)
       if (DataArray.data.get(i).key.equals(key)) {
         DataArray.data.remove(i);

@@ -1,5 +1,6 @@
 import java.net.Socket;
 import java.io.*;
+import java.util.Scanner;
 
 public class ConnectionThread extends Thread {
   private Socket socket;
@@ -9,6 +10,8 @@ public class ConnectionThread extends Thread {
   }
 
   public void run() {
+    boolean authenticated = false;
+
     while (this.socket.isConnected()) {
       try {
         InputStream input = this.socket.getInputStream();
@@ -27,7 +30,30 @@ public class ConnectionThread extends Thread {
           socket.close();
           return;
         }
-        writer.println(Commands.handle(command));
+        if (command.startsWith("AUTH"))
+          if (authenticated)
+            writer.println("Already authenticated!");
+          else {
+            String passwordInput = command.replace("AUTH ", "");
+            try {
+              File passwordFile = new File("./coffeedb_password");
+              Scanner passwordFileReader = new Scanner(passwordFile);
+              if (passwordFileReader.hasNextLine())
+                if (passwordInput.equals(passwordFileReader.nextLine())) {
+                  authenticated = true;
+                  writer.println("Success");
+                } else
+                  writer.println("Incorrect password");
+              passwordFileReader.close();
+            } catch (IOException e) {
+              System.out.println("You do not have the permission to read and/or write and/or create the file ./coffeedb_password");
+              writer.println("Internal server error");
+            }
+          }
+        else if (authenticated)
+          writer.println(Commands.handle(command));
+        else
+          writer.println("Authenticate with AUTH <password> first");
       } catch (IOException e) {
         System.out.println("Handling client connection failed (IOException) - " + e.getMessage());
       }

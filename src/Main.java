@@ -1,9 +1,12 @@
 import java.net.ServerSocket;
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class Main {
   public static void main(String[] args) {
-    if (args.length < 1) {
+    if (args.length != 1) {
       System.out.println("Port not specified");
       return;
     }
@@ -14,6 +17,19 @@ public class Main {
       port = Integer.parseInt(args[0]);
     } catch (NumberFormatException e) {
       System.out.println("Port specified is not a number");
+      return;
+    }
+
+    try {
+      File passwordFile = new File("./coffeedb_password");
+      if (!passwordFile.exists()) {
+        passwordFile.createNewFile();
+        FileWriter passwordFileWriter = new FileWriter(passwordFile);
+        passwordFileWriter.write("secret");
+        passwordFileWriter.close();
+      }
+    } catch (IOException e) {
+      System.out.println("You do not have the permission to read and/or write and/or create the file ./coffeedb_password");
       return;
     }
 
