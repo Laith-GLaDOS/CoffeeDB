@@ -28,7 +28,7 @@ public class Main {
         passwordFileWriter.close();
       }
     } catch (IOException e) {
-      System.out.println("You do not have the permission to read and/or write and/or create the file ./coffeedb_password");
+      System.out.println("IO error with file ./coffeedb_password - " + e.getMessage());
       return;
     }
 
