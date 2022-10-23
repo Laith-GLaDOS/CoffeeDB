@@ -38,17 +38,17 @@ public class Commands {
   }
 
   private static String GET(String key) {
-    for (int i = 0; i < DataArray.data.size(); i++)
-      if (DataArray.data.get(i).key.equals(key))
-        return DataArray.data.get(i).type + " " + DataArray.data.get(i).value;
+    for (int i = 0; i < DB.data.size(); i++)
+      if (DB.data.get(i).key.equals(key))
+        return DB.data.get(i).type + " " + DB.data.get(i).value;
 
     return "Key not found";
   }
 
   private static String GETKEYS() {
     String keys = "";
-    for (int i = 0; i < DataArray.data.size(); i++)
-      keys += DataArray.data.get(i).key + (i != DataArray.data.size() - 1 ? ", " : "");
+    for (int i = 0; i < DB.data.size(); i++)
+      keys += DB.data.get(i).key + (i != DB.data.size() - 1 ? ", " : "");
 
     return keys;
   }
@@ -57,8 +57,8 @@ public class Commands {
     boolean setInsteadOfAdd = false;
     int setIndex = 0;
 
-    for (int i = 0; i < DataArray.data.size(); i++)
-      if (DataArray.data.get(i).key.equals(key)) {
+    for (int i = 0; i < DB.data.size(); i++)
+      if (DB.data.get(i).key.equals(key)) {
         setInsteadOfAdd = true;
         setIndex = i;
       }
@@ -69,9 +69,9 @@ public class Commands {
           return "Invalid value for bool";
 
         if (setInsteadOfAdd)
-          DataArray.data.set(setIndex, new KeyValueObject(key, value, type));
+          DB.data.set(setIndex, new KeyValueObject(key, value, type));
         else
-          DataArray.data.add(new KeyValueObject(key, value, type));
+          DB.data.add(new KeyValueObject(key, value, type));
 
         break;
 
@@ -79,9 +79,9 @@ public class Commands {
         try {
           Integer.parseInt(value);
           if (setInsteadOfAdd)
-            DataArray.data.set(setIndex, new KeyValueObject(key, value, type));
+            DB.data.set(setIndex, new KeyValueObject(key, value, type));
           else
-            DataArray.data.add(new KeyValueObject(key, value, type));
+            DB.data.add(new KeyValueObject(key, value, type));
         } catch (Exception e) {
           return "Invalid value for int";
         }
@@ -91,9 +91,9 @@ public class Commands {
         try {
           Float.parseFloat(value);
           if (setInsteadOfAdd)
-            DataArray.data.set(setIndex, new KeyValueObject(key, value, type));
+            DB.data.set(setIndex, new KeyValueObject(key, value, type));
           else
-            DataArray.data.add(new KeyValueObject(key, value, type));
+            DB.data.add(new KeyValueObject(key, value, type));
         } catch (Exception e) {
           return "Invalid value for float";
         }
@@ -103,9 +103,9 @@ public class Commands {
         try {
           Double.parseDouble(value);
           if (setInsteadOfAdd)
-            DataArray.data.set(setIndex, new KeyValueObject(key, value, type));
+            DB.data.set(setIndex, new KeyValueObject(key, value, type));
           else
-            DataArray.data.add(new KeyValueObject(key, value, type));
+            DB.data.add(new KeyValueObject(key, value, type));
         } catch (Exception e) {
           return "Invalid value for double";
         }
@@ -113,22 +113,24 @@ public class Commands {
 
       case "string":
         if (setInsteadOfAdd)
-          DataArray.data.set(setIndex, new KeyValueObject(key, value, type));
+          DB.data.set(setIndex, new KeyValueObject(key, value, type));
         else
-          DataArray.data.add(new KeyValueObject(key, value, type));
+          DB.data.add(new KeyValueObject(key, value, type));
         break;
 
       default:
         return "Unknown datatype";
     }
 
+    DB.saveToFile();
     return "Success";
   }
 
   private static String DELETE(String key) {
-    for (int i = 0; i < DataArray.data.size(); i++)
-      if (DataArray.data.get(i).key.equals(key)) {
-        DataArray.data.remove(i);
+    for (int i = 0; i < DB.data.size(); i++)
+      if (DB.data.get(i).key.equals(key)) {
+        DB.data.remove(i);
+        DB.saveToFile();
         return "Success";
       }
 

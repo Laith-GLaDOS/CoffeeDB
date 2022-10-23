@@ -1,12 +1,12 @@
 
 public class KeyValueObject {
+  public String type;
   public String key;
   public String value;
-  public String type;
 
-  public KeyValueObject(String key, String value, String type) {
+  public KeyValueObject(String type, String key, String value) {
+    this.type = type;
     this.key = key;
     this.value = value;
-    this.type = type;
   }
 }

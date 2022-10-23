@@ -32,6 +32,21 @@ public class Main {
       return;
     }
 
+    try {
+      File dataFile = new File("./coffeedb_data");
+      if (!dataFile.exists()) {
+        dataFile.createNewFile();
+        FileWriter dataFileWriter = new FileWriter(dataFile);
+        dataFileWriter.write("");
+        dataFileWriter.close();
+      }
+    } catch (IOException e) {
+      System.out.println("IO error with file ./coffeedb_data - " + e.getMessage());
+      return;
+    }
+
+    if (DB.loadFromFile() == 1) return;
+
     if (port < 1) {
       System.out.println("Port must be above 1");
       return;
