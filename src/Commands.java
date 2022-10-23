@@ -10,6 +10,13 @@ public class Commands {
         System.out.println("GET " + commandAndArgs[1] + " -> " + GETReturnValue);
         return GETReturnValue;
 
+      case "GET-KEYS":
+        if (commandAndArgs.length != 1)
+          return "Bad arguments";
+        String GETKEYSReturnValue = GETKEYS();
+        System.out.println("GETKEYS -> " + GETKEYSReturnValue);
+        return GETKEYSReturnValue;
+
       case "SET":
         if (commandAndArgs.length < 4)
           return "Bad arguments";
@@ -36,6 +43,14 @@ public class Commands {
         return DataArray.data.get(i).type + " " + DataArray.data.get(i).value;
 
     return "Key not found";
+  }
+
+  public static String GETKEYS() {
+    String keys = "";
+    for (int i = 0; i < DataArray.data.size(); i++)
+      keys += DataArray.data.get(i).key + (i != DataArray.data.size() - 1 ? ", " : "");
+
+    return keys;
   }
 
   public static String SET(String key, String type, String value) {
