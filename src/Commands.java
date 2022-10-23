@@ -11,10 +11,10 @@ public class Commands {
         return GETReturnValue;
 
       case "SET":
-        if (commandAndArgs.length != 4)
+        if (commandAndArgs.length < 4)
           return "Bad arguments";
-        String SETReturnValue = SET(commandAndArgs[1], commandAndArgs[2], commandAndArgs[3]);
-        System.out.println("SET " + commandAndArgs[1] + " " + commandAndArgs[2] + " " + commandAndArgs[3] + " -> " + SETReturnValue);
+        String SETReturnValue = SET(commandAndArgs[1], commandAndArgs[2], command.replace("SET " + commandAndArgs[1] + " " + commandAndArgs[2] + " " , ""));
+        System.out.println("SET " + commandAndArgs[1] + " " + commandAndArgs[2] + " " + command.replace("SET " + commandAndArgs[1] + " " + commandAndArgs[2] + " " , "") + " -> " + SETReturnValue);
         return SETReturnValue;
 
       case "DELETE":
