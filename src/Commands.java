@@ -6,19 +6,26 @@ public class Commands {
       case "GET":
         if (commandAndArgs.length != 2)
           return "Bad arguments";
-        return GET(commandAndArgs[1]);
-      
+        String GETReturnValue = GET(commandAndArgs[1]);
+        System.out.println("GET " + commandAndArgs[1] + " -> " + GETReturnValue);
+        return GETReturnValue;
+
       case "SET":
-        if (commandAndArgs.length != 3)
+        if (commandAndArgs.length != 4)
           return "Bad arguments";
-        return SET(commandAndArgs[1], commandAndArgs[2]);
+        String SETReturnValue = SET(commandAndArgs[1], commandAndArgs[2], commandAndArgs[3]);
+        System.out.println("SET " + commandAndArgs[1] + " " + commandAndArgs[2] + " " + commandAndArgs[3] + " -> " + SETReturnValue);
+        return SETReturnValue;
 
       case "DELETE":
         if (commandAndArgs.length != 2)
           return "Bad arguments";
-        return DELETE(commandAndArgs[1]);
+        String DELETEReturnValue = DELETE(commandAndArgs[1]);
+        System.out.println("DELETE " + commandAndArgs[1] + " -> " + DELETEReturnValue);
+        return DELETEReturnValue;
 
       default:
+        System.out.println(command + " -> Command not found");
         return "Command not found";
     }
   }
@@ -26,17 +33,79 @@ public class Commands {
   public static String GET(String key) {
     for (int i = 0; i < DataArray.data.size(); i++)
       if (DataArray.data.get(i).key.equals(key))
-        return DataArray.data.get(i).value;
+        return DataArray.data.get(i).type + " " + DataArray.data.get(i).value;
 
     return "Key not found";
   }
 
-  public static String SET(String key, String value) {
-    for (int i = 0; i < DataArray.data.size(); i++)
-      if (DataArray.data.get(i).key.equals(key))
-        DataArray.data.set(i, new KeyValueObject(key, value));
+  public static String SET(String key, String type, String value) {
+    boolean setInsteadOfAdd = false;
+    int setIndex = 0;
 
-    DataArray.data.add(new KeyValueObject(key, value));
+    for (int i = 0; i < DataArray.data.size(); i++)
+      if (DataArray.data.get(i).key.equals(key)) {
+        setInsteadOfAdd = true;
+        setIndex = i;
+      }
+
+    switch (type) {
+      case "bool":
+        if (value != "true" && value != "false")
+          return "Invalid value for bool";
+
+        if (setInsteadOfAdd)
+          DataArray.data.set(setIndex, new KeyValueObject(key, value, type));
+        else
+          DataArray.data.add(new KeyValueObject(key, value, type));
+
+        break;
+
+      case "int":
+        try {
+          Integer.parseInt(value);
+          if (setInsteadOfAdd)
+            DataArray.data.set(setIndex, new KeyValueObject(key, value, type));
+          else
+            DataArray.data.add(new KeyValueObject(key, value, type));
+        } catch (Exception e) {
+          return "Invalid value for int";
+        }
+        break;
+
+      case "float":
+        try {
+          Float.parseFloat(value);
+          if (setInsteadOfAdd)
+            DataArray.data.set(setIndex, new KeyValueObject(key, value, type));
+          else
+            DataArray.data.add(new KeyValueObject(key, value, type));
+        } catch (Exception e) {
+          return "Invalid value for float";
+        }
+        break;
+
+      case "double":
+        try {
+          Double.parseDouble(value);
+          if (setInsteadOfAdd)
+            DataArray.data.set(setIndex, new KeyValueObject(key, value, type));
+          else
+            DataArray.data.add(new KeyValueObject(key, value, type));
+        } catch (Exception e) {
+          return "Invalid value for double";
+        }
+        break;
+
+      case "string":
+        if (setInsteadOfAdd)
+          DataArray.data.set(setIndex, new KeyValueObject(key, value, type));
+        else
+          DataArray.data.add(new KeyValueObject(key, value, type));
+        break;
+
+      default:
+        return "Unknown datatype";
+    }
 
     return "Success";
   }

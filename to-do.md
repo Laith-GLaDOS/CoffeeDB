@@ -1,4 +1,4 @@
 # To-do:
  - Add authentication
  - Add saving data to a file
- - Add logging
+ - Add string support with spaces
