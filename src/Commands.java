@@ -10,7 +10,7 @@ public class Commands {
         System.out.println("GET " + commandAndArgs[1] + " -> " + GETReturnValue);
         return GETReturnValue;
 
-      case "GET-KEYS":
+      case "GETKEYS":
         if (commandAndArgs.length != 1)
           return "Bad arguments";
         String GETKEYSReturnValue = GETKEYS();
