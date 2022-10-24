@@ -1,2 +1,0 @@
-const coffeedb = require('../sdk');
-
