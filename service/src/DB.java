@@ -16,9 +16,10 @@ public class DB {
         String newData = dataFileReader.nextLine();
         String[] newDataAsArray = newData.split("\0");
         for (int i = 0; i < newDataAsArray.length; i++) {
-          String key = newDataAsArray[i].split(" ")[0];
-          String type = newDataAsArray[i].split(" ")[1];
-          String value = newDataAsArray[i].replaceAll(type + " " + key + " ", "");
+          String[] newDataChunk = newDataAsArray[i].split(" ");
+          String key = newDataChunk[0];
+          String type = newDataChunk[1];
+          String value = newDataAsArray[i].replaceAll(key + " " + type + " ", "");
           data.add(new KeyValueObject(key, type, value));
         }
       }
