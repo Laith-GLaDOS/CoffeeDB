@@ -33,7 +33,7 @@ public class ConnectionThread extends Thread {
         }
         if (command.startsWith("AUTH"))
           if (authenticated)
-            writer.println("Already authenticated!");
+            writer.write("Already authenticated!");
           else {
             String passwordInput = command.replace("AUTH ", "");
             try {
@@ -42,19 +42,20 @@ public class ConnectionThread extends Thread {
               if (passwordFileReader.hasNextLine())
                 if (passwordInput.equals(passwordFileReader.nextLine())) {
                   authenticated = true;
-                  writer.println("Success");
+                  writer.write("Success");
                 } else
-                  writer.println("Incorrect password");
+                  writer.write("Incorrect password");
               passwordFileReader.close();
             } catch (IOException e) {
               System.out.println("You do not have the permission to read and/or write and/or create the file ./coffeedb_password");
-              writer.println("Internal server error");
+              writer.write("Internal server error");
             }
           }
         else if (authenticated)
-          writer.println(Commands.handle(command));
+          writer.write(Commands.handle(command));
         else
-          writer.println("Authenticate with AUTH <password> first");
+          writer.write("Authenticate with AUTH <password> first");
+        writer.flush();
       } catch (IOException e) {
         System.out.println("Handling client connection failed (IOException) - " + e.getMessage());
       }
