@@ -69,9 +69,9 @@ public class Commands {
           return "Invalid value for bool";
 
         if (setInsteadOfAdd)
-          DB.data.set(setIndex, new KeyValueObject(key, value, type));
+          DB.data.set(setIndex, new KeyValueObject(key, type, value));
         else
-          DB.data.add(new KeyValueObject(key, value, type));
+          DB.data.add(new KeyValueObject(key, type, value));
 
         break;
 
@@ -79,9 +79,9 @@ public class Commands {
         try {
           Integer.parseInt(value);
           if (setInsteadOfAdd)
-            DB.data.set(setIndex, new KeyValueObject(key, value, type));
+            DB.data.set(setIndex, new KeyValueObject(key, type, value));
           else
-            DB.data.add(new KeyValueObject(key, value, type));
+            DB.data.add(new KeyValueObject(key, type, value));
         } catch (Exception e) {
           return "Invalid value for int";
         }
@@ -91,9 +91,9 @@ public class Commands {
         try {
           Float.parseFloat(value);
           if (setInsteadOfAdd)
-            DB.data.set(setIndex, new KeyValueObject(key, value, type));
+            DB.data.set(setIndex, new KeyValueObject(key, type, value));
           else
-            DB.data.add(new KeyValueObject(key, value, type));
+            DB.data.add(new KeyValueObject(key, type, value));
         } catch (Exception e) {
           return "Invalid value for float";
         }
@@ -103,9 +103,9 @@ public class Commands {
         try {
           Double.parseDouble(value);
           if (setInsteadOfAdd)
-            DB.data.set(setIndex, new KeyValueObject(key, value, type));
+            DB.data.set(setIndex, new KeyValueObject(key, type, value));
           else
-            DB.data.add(new KeyValueObject(key, value, type));
+            DB.data.add(new KeyValueObject(key, type, value));
         } catch (Exception e) {
           return "Invalid value for double";
         }
@@ -113,9 +113,9 @@ public class Commands {
 
       case "string":
         if (setInsteadOfAdd)
-          DB.data.set(setIndex, new KeyValueObject(key, value, type));
+          DB.data.set(setIndex, new KeyValueObject(key, type, value));
         else
-          DB.data.add(new KeyValueObject(key, value, type));
+          DB.data.add(new KeyValueObject(key, type, value));
         break;
 
       default:

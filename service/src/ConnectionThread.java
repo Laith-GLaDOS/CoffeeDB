@@ -1,5 +1,9 @@
 import java.net.Socket;
-import java.io.*;
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class ConnectionThread extends Thread {
@@ -14,12 +18,9 @@ public class ConnectionThread extends Thread {
 
     while (this.socket.isConnected()) {
       try {
-        InputStream input = this.socket.getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-        String command = reader.readLine();
+        String command = new BufferedReader(new InputStreamReader(this.socket.getInputStream())).readLine();
 
-        OutputStream output = this.socket.getOutputStream();
-        PrintWriter writer = new PrintWriter(output, true);
+        PrintWriter writer = new PrintWriter(this.socket.getOutputStream(), true);
         if (command == null) {
           // i have to do 2 ifs instead of using || cuz equals throws exception if null
           // when command is null it means the socket has been terminated by the client
