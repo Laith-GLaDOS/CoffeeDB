@@ -16,10 +16,10 @@ public class DB {
         String newData = dataFileReader.nextLine();
         String[] newDataAsArray = newData.split("\0");
         for (int i = 0; i < newDataAsArray.length; i++) {
-          String type = newDataAsArray[i].split(" ")[0];
-          String key = newDataAsArray[i].split(" ")[1];
+          String key = newDataAsArray[i].split(" ")[0];
+          String type = newDataAsArray[i].split(" ")[1];
           String value = newDataAsArray[i].replaceAll(type + " " + key + " ", "");
-          data.add(new KeyValueObject(type, key, value));
+          data.add(new KeyValueObject(key, type, value));
         }
       }
       dataFileReader.close();
@@ -41,7 +41,7 @@ public class DB {
       FileWriter dataFileWriter = new FileWriter(dataFile);
       String dataToWrite = "";
       for (int i = 0; i < data.size(); i++)
-        dataToWrite += data.get(i).type + " " + data.get(i).key + " " + data.get(i).value + "\0";
+        dataToWrite += data.get(i).key + " " + data.get(i).type + " " + data.get(i).value + "\0";
       dataFileWriter.write(dataToWrite);
       dataFileWriter.close();
     } catch (IOException e) {
