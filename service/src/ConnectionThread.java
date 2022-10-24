@@ -30,21 +30,26 @@ public class ConnectionThread extends Thread {
           return;
         }
         if (command.startsWith("AUTH"))
-          try {
-            String passwordInput = command.replace("AUTH ", "");
-            File passwordFile = new File("./coffeedb_password");
-            Scanner passwordFileReader = new Scanner(passwordFile);
-            if (passwordFileReader.hasNextLine())
-              if (passwordInput.equals(passwordFileReader.nextLine())) {
-                authenticated = true;
-                writer.println("Success");
-              } else
-                writer.println("Incorrect password");
-            passwordFileReader.close();
-          } catch (IOException e) {
-            System.out.println("You do not have the permission to read and/or write and/or create the file ./coffeedb_password");
-            writer.println("Internal server error");
-          }
+          if (command.split(" ").length < 2)
+            writer.println("Bad arguments");
+          else if (authenticated)
+            writer.println("Already authenticated");
+          else
+            try {
+              String passwordInput = command.replace("AUTH ", "");
+              File passwordFile = new File("./coffeedb_password");
+              Scanner passwordFileReader = new Scanner(passwordFile);
+              if (passwordFileReader.hasNextLine())
+                if (passwordInput.equals(passwordFileReader.nextLine())) {
+                  authenticated = true;
+                  writer.println("Success");
+                } else
+                  writer.println("Incorrect password");
+              passwordFileReader.close();
+            } catch (IOException e) {
+              System.out.println("You do not have the permission to read and/or write and/or create the file ./coffeedb_password");
+              writer.println("Internal server error");
+            }
         else if (authenticated)
           writer.println(Commands.handle(command));
         else
