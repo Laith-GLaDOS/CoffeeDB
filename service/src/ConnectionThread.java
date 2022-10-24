@@ -14,12 +14,9 @@ public class ConnectionThread extends Thread {
 
     while (this.socket.isConnected()) {
       try {
-        InputStream input = this.socket.getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-        String command = reader.readLine();
+        String command = new BufferedReader(new InputStreamReader(this.socket.getInputStream())).readLine();
 
-        OutputStream output = this.socket.getOutputStream();
-        PrintWriter writer = new PrintWriter(output, true);
+        PrintWriter writer = new PrintWriter(this.socket.getOutputStream(), true);
         if (command == null) {
           // i have to do 2 ifs instead of using || cuz equals throws exception if null
           // when command is null it means the socket has been terminated by the client
@@ -32,28 +29,29 @@ public class ConnectionThread extends Thread {
         }
         if (command.startsWith("AUTH"))
           if (authenticated)
-            writer.println("Already authenticated!");
+            writer.write("Already authenticated!");
           else {
             String passwordInput = command.replace("AUTH ", "");
             try {
               File passwordFile = new File("./coffeedb_password");
-              Scanner passwordFileReader = new Scanner(passwordFile);
-              if (passwordFileReader.hasNextLine())
-                if (passwordInput.equals(passwordFileReader.nextLine())) {
+              Scanner passwordFileScanner = new Scanner(passwordFile);
+              if (passwordFileScanner.hasNextLine())
+                if (passwordInput.equals(passwordFileScanner.nextLine())) {
                   authenticated = true;
-                  writer.println("Success");
+                  writer.write("Success");
                 } else
-                  writer.println("Incorrect password");
-              passwordFileReader.close();
+                  writer.write("Incorrect password");
+                  passwordFileScanner.close();
             } catch (IOException e) {
               System.out.println("You do not have the permission to read and/or write and/or create the file ./coffeedb_password");
-              writer.println("Internal server error");
+              writer.write("Internal server error");
             }
           }
         else if (authenticated)
-          writer.println(Commands.handle(command));
+          writer.write(Commands.handle(command));
         else
-          writer.println("Authenticate with AUTH <password> first");
+          writer.write("Authenticate with AUTH <password> first");
+        writer.flush();
       } catch (IOException e) {
         System.out.println("Handling client connection failed (IOException) - " + e.getMessage());
       }
