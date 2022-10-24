@@ -122,7 +122,7 @@ public class Commands {
         return "Unknown datatype";
     }
 
-    DB.saveToFile();
+    if (DB.saveToFile() == 1) return "Internal server error";
     return "Success";
   }
 
@@ -130,7 +130,7 @@ public class Commands {
     for (int i = 0; i < DB.data.size(); i++)
       if (DB.data.get(i).key.equals(key)) {
         DB.data.remove(i);
-        DB.saveToFile();
+        if (DB.saveToFile() == 1) return "Internal server error";
         return "Success";
       }
 
