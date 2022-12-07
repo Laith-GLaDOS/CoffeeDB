@@ -1,3 +1,5 @@
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class Commands {
   public static String handle(String command) {
@@ -6,33 +8,31 @@ public class Commands {
       case "GET":
         if (commandAndArgs.length != 2)
           return "Bad arguments";
-        String GETReturnValue = GET(commandAndArgs[1]);
-        System.out.println("GET " + commandAndArgs[1] + " -> " + GETReturnValue);
-        return GETReturnValue;
+        return GET(commandAndArgs[1]);
 
       case "GETKEYS":
         if (commandAndArgs.length != 1)
           return "Bad arguments";
-        String GETKEYSReturnValue = GETKEYS();
-        System.out.println("GETKEYS -> " + GETKEYSReturnValue);
-        return GETKEYSReturnValue;
+        return GETKEYS();
 
       case "SET":
         if (commandAndArgs.length < 4)
           return "Bad arguments";
-        String SETReturnValue = SET(commandAndArgs[1], commandAndArgs[2], command.replace("SET " + commandAndArgs[1] + " " + commandAndArgs[2] + " " , ""));
-        System.out.println("SET " + commandAndArgs[1] + " " + commandAndArgs[2] + " " + command.replace("SET " + commandAndArgs[1] + " " + commandAndArgs[2] + " " , "") + " -> " + SETReturnValue);
-        return SETReturnValue;
+        return SET(commandAndArgs[1], commandAndArgs[2], command.replace("SET " + commandAndArgs[1] + " " + commandAndArgs[2] + " " , ""));
 
       case "DELETE":
         if (commandAndArgs.length != 2)
           return "Bad arguments";
-        String DELETEReturnValue = DELETE(commandAndArgs[1]);
-        System.out.println("DELETE " + commandAndArgs[1] + " -> " + DELETEReturnValue);
-        return DELETEReturnValue;
+        return DELETE(commandAndArgs[1]);
+
+      case "EXPIRE":
+        if (commandAndArgs.length != 4)
+          return "Bad arguments";
+        if (!commandAndArgs[2].equals("IN"))
+          return "Bad arguments";
+        return EXPIRE(commandAndArgs[1], commandAndArgs[3]);
 
       default:
-        System.out.println(command + " -> Command not found");
         return "Command not found";
     }
   }
@@ -135,5 +135,18 @@ public class Commands {
       }
 
     return "Key not found";
+  }
+
+  private static String EXPIRE(String keyToExpire, String howManyMsBeforeExpire) {
+    if (GET(keyToExpire) == "Key not found")
+      return "Key not found";
+    int howManyMsBeforeExpireInt = 0;
+    try {
+      howManyMsBeforeExpireInt = Integer.parseInt(howManyMsBeforeExpire);
+    } catch (Exception e) {
+      return "Invalid millisecond value";
+    }
+    CompletableFuture.delayedExecutor(howManyMsBeforeExpireInt, TimeUnit.MILLISECONDS).execute(() -> DELETE(keyToExpire));
+    return "Success";
   }
 }
