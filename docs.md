@@ -12,3 +12,13 @@ First off, when you connect, you must send an AUTH command to authenticate and a
 
 # Playing around
 You can open a shell to run commands in the DB using Netcat with this command: `nc <host> <port>`
+
+# Deploying
+Make sure you have a working JDK install, and then clone this repository, and run these commands:
+```bash
+cd CoffeeDB/service/build
+./build.sh
+echo "<password>" > ./coffeedb_password
+java -jar output/CoffeeDB.jar <port>
+```
+Replace `<password>` with the actual password you want for authentication in this database and replace `<port>` with the port you want the database to run on
