@@ -28,16 +28,22 @@ public class ConnectionThread extends Thread {
             if (request.get("action") == null) {
               JSONObject response = new JSONObject();
               response.set("status", "error");
-              response.set("message", "Invalid request body");
+              response.set("message", "Action is missing");
+              response.setNull("payload");
+              writer.println(response.toJSONString());
+            } else if (!request.get("action").equals("authenticate")) {
+              JSONObject response = new JSONObject();
+              response.set("status", "error");
+              response.set("message", "Please authenticate first");
               response.setNull("payload");
               writer.println(response.toJSONString());
             } else if (request.get("password") == null) {
               JSONObject response = new JSONObject();
               response.set("status", "error");
-              response.set("message", "Invalid request body");
+              response.set("message", "Password is missing");
               response.setNull("payload");
               writer.println(response.toJSONString());
-            } else if (request.get("action").equals("authenticate")) {
+            } else {
               File passwordFile = new File("./coffeedb_password");
               Scanner passwordFileReader = new Scanner(passwordFile);
               if (passwordFileReader.hasNextLine())
@@ -55,6 +61,7 @@ public class ConnectionThread extends Thread {
                   response.setNull("payload");
                   writer.println(response.toJSONString());
                 }
+              passwordFileReader.close();
             } else {
               JSONObject response = new JSONObject();
               response.set("status", "error");
