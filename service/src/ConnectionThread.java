@@ -24,11 +24,48 @@ public class ConnectionThread extends Thread {
           return;
         try {
           JSONObject request = new JSONObjectFromString(requestAsJsonString);
-          writer.println(request.toJSONString());
+          if (!authenticated)
+            if (request.get("action") == null) {
+              JSONObject response = new JSONObject();
+              response.set("status", "error");
+              response.set("message", "Invalid request body");
+              response.setNull("payload");
+              writer.println(response.toJSONString());
+            } else if (request.get("password") == null) {
+              JSONObject response = new JSONObject();
+              response.set("status", "error");
+              response.set("message", "Invalid request body");
+              response.setNull("payload");
+              writer.println(response.toJSONString());
+            } else if (request.get("action").equals("authenticate")) {
+              File passwordFile = new File("./coffeedb_password");
+              Scanner passwordFileReader = new Scanner(passwordFile);
+              if (passwordFileReader.hasNextLine())
+                if (request.get("password").equals(passwordFileReader.nextLine())) {
+                  authenticated = true;
+                  JSONObject response = new JSONObject();
+                  response.set("status", "success");
+                  response.set("message", "Authentication complete");
+                  response.setNull("payload");
+                  writer.println(response.toJSONString());
+                } else {
+                  JSONObject response = new JSONObject();
+                  response.set("status", "error");
+                  response.set("message", "Incorrect password");
+                  response.setNull("payload");
+                  writer.println(response.toJSONString());
+                }
+            } else {
+              JSONObject response = new JSONObject();
+              response.set("status", "error");
+              response.set("message", "Please authenticate first");
+              response.setNull("payload");
+              writer.println(response.toJSONString());
+            }
         } catch (InvalidJSONException e) {
           JSONObject response = new JSONObject();
           response.set("status", "error");
-          response.set("message", "Invalid request body, server was expecting JSON");
+          response.set("message", "Invalid request body");
           response.setNull("payload");
           writer.println(response.toJSONString());
         }
