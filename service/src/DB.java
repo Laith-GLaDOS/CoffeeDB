@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class DB {
-  public static List<KeyValueObject> data = new ArrayList<KeyValueObject>();
+  public static List<KeyValue> data = new ArrayList<KeyValue>();
   public static int loadFromFile() {
     File dataFile = new File("./coffeedb_data");
     try {
@@ -20,7 +20,7 @@ public class DB {
           String key = newDataChunk[0];
           String type = newDataChunk[1];
           String value = newDataAsArray[i].replaceAll(key + " " + type + " ", "");
-          data.add(new KeyValueObject(key, type, value));
+          data.add(new KeyValue(key, type, value));
         }
       }
       dataFileReader.close();
