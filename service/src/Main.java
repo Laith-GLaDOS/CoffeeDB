@@ -61,18 +61,15 @@ public class Main {
 
     try (ServerSocket server = new ServerSocket(port)) {
       Logger.log(LogType.NORMAL, "Server started");
-      while (true) {
-        try {
-          ConnectionThread thread = new ConnectionThread(server.accept());
-          thread.start();
-          Logger.log(LogType.NORMAL, "Connection accepted");
-        } catch (IOException e) {
-          Logger.log(LogType.ERROR, "Accepting client connection failed (IOException) - " + e.getMessage());
-        }
+      while (true) try {
+        ConnectionThread thread = new ConnectionThread(server.accept());
+        thread.start();
+        Logger.log(LogType.NORMAL, "Connection accepted");
+      } catch (IOException e) {
+        Logger.log(LogType.ERROR, "Accepting client connection failed (IOException) - " + e.getMessage());
       }
     } catch (IOException e) {
       Logger.log(LogType.ERROR, "Server failed to start (IOException) - " + e.getMessage());
-      return;
     }
   }
 }

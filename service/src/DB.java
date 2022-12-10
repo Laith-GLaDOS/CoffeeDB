@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class DB {
-  public static List<KeyValue> data = new ArrayList<KeyValue>();
+  public static List<KeyValue> data = new ArrayList<>();
   public static int loadFromFile() {
     File dataFile = new File("./coffeedb_data");
     try {
@@ -15,17 +15,18 @@ public class DB {
       if (dataFileReader.hasNextLine()) {
         String newData = dataFileReader.nextLine();
         String[] newDataAsArray = newData.split("\0");
-        for (int i = 0; i < newDataAsArray.length; i++) {
-          String[] newDataChunk = newDataAsArray[i].split(" ");
+        for (String s : newDataAsArray) {
+          String[] newDataChunk = s.split(" ");
           String key = newDataChunk[0];
           String type = newDataChunk[1];
-          String value = newDataAsArray[i].replaceAll(key + " " + type + " ", "");
+          String value = s.replaceAll(key + " " + type + " ", "");
           data.add(new KeyValue(key, type, value));
         }
       }
       dataFileReader.close();
     } catch (FileNotFoundException e) {
       try {
+        //noinspection ResultOfMethodCallIgnored
         dataFile.createNewFile();
         loadFromFile();
       } catch (IOException e2) {
@@ -38,12 +39,13 @@ public class DB {
   public static int saveToFile() {
     File dataFile = new File("./coffeedb_data");
     try {
+      //noinspection ResultOfMethodCallIgnored
       dataFile.createNewFile();
       FileWriter dataFileWriter = new FileWriter(dataFile);
-      String dataToWrite = "";
-      for (int i = 0; i < data.size(); i++)
-        dataToWrite += data.get(i).key + " " + data.get(i).type + " " + data.get(i).value + "\0";
-      dataFileWriter.write(dataToWrite);
+      StringBuilder dataToWrite = new StringBuilder();
+      for (KeyValue datum : data)
+        dataToWrite.append(datum.key).append(" ").append(datum.type).append(" ").append(datum.value).append("\0");
+      dataFileWriter.write(dataToWrite.toString());
       dataFileWriter.close();
     } catch (IOException e) {
       System.out.println("IO error with file ./coffeedb_data - " + e.getMessage());

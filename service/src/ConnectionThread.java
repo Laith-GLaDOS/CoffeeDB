@@ -8,7 +8,7 @@ import java.util.Scanner;
 import ziph.*;
 
 public class ConnectionThread extends Thread {
-  private Socket socket;
+  private final Socket socket;
 
   public ConnectionThread(Socket socket) {
     this.socket = socket;
