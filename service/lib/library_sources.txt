@@ -1,1 +1,1 @@
-ZiphJSON-v1.0.3-beta.jar from https://github.com/Laith-GLaDOS/ZiphJSON/releases/tag/v1.0.3-beta (source code at https://github.com/Laith-GLaDOS/ZiphJSON)
+ZiphJSON-v1.0.4-beta.jar from https://github.com/Laith-GLaDOS/ZiphJSON/releases/tag/v1.0.4-beta (source code at https://github.com/Laith-GLaDOS/ZiphJSON)
