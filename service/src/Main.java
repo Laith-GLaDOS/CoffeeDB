@@ -47,7 +47,7 @@ public class Main {
       return;
     }
 
-    if (DB.loadFromFile() == 1) return;
+    //if (DB.loadFromFile() == 1) return;
 
     if (port < 1) {
       Logger.log(LogType.ERROR, "Port must be above or equal to 1");
