@@ -62,12 +62,6 @@ public class ConnectionThread extends Thread {
                   writer.println(response.toJSONString());
                 }
               passwordFileReader.close();
-            } else {
-              JSONObject response = new JSONObject();
-              response.set("status", "error");
-              response.set("message", "Please authenticate first");
-              response.setNull("payload");
-              writer.println(response.toJSONString());
             }
         } catch (InvalidJSONException e) {
           JSONObject response = new JSONObject();
