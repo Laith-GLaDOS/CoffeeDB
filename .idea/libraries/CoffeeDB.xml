@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="CoffeeDB">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/service/build/output/CoffeeDB.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

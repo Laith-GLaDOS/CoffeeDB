@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.Scanner;
+import ziph.*;
 
 public class ConnectionThread extends Thread {
   private Socket socket;
@@ -17,45 +18,24 @@ public class ConnectionThread extends Thread {
     boolean authenticated = false;
     while (this.socket.isConnected()) {
       try {
-        String command = new BufferedReader(new InputStreamReader(this.socket.getInputStream())).readLine();
+        String requestAsJsonString = new BufferedReader(new InputStreamReader(this.socket.getInputStream())).readLine();
         PrintWriter writer = new PrintWriter(this.socket.getOutputStream(), true);
-        if (command == null) {
-          // i have to do 2 ifs instead of using || cuz equals throws exception if null
-          // when command is null it means the socket has been terminated by the client
-          socket.close();
+        if (requestAsJsonString == null)
           return;
+        try {
+          JSONObject request = new JSONObjectFromString(requestAsJsonString);
+          writer.println(request.toJSONString());
+        } catch (InvalidJSONException e) {
+          JSONObject response = new JSONObject();
+          response.set("status", "error");
+          response.set("message", "Invalid request body, server was expecting JSON");
+          response.setNull("payload");
+          writer.println(response.toJSONString());
         }
-        if (command.equals("EXIT")) {
-          socket.close();
-          return;
-        }
-        if (command.startsWith("AUTH"))
-          if (command.split(" ").length < 2)
-            writer.println("Bad arguments");
-          else if (authenticated)
-            writer.println("Already authenticated");
-          else
-            try {
-              String passwordInput = command.replace("AUTH ", "");
-              File passwordFile = new File("./coffeedb_password");
-              Scanner passwordFileReader = new Scanner(passwordFile);
-              if (passwordFileReader.hasNextLine())
-                if (passwordInput.equals(passwordFileReader.nextLine())) {
-                  authenticated = true;
-                  writer.println("Success");
-                } else
-                  writer.println("Incorrect password");
-              passwordFileReader.close();
-            } catch (IOException e) {
-              System.out.println("You do not have the permission to read and/or write and/or create the file ./coffeedb_password");
-              writer.println("Internal server error");
-            }
-        else if (authenticated)
-          writer.println(Commands.handle(command));
-        else
-          writer.println("Authenticate with AUTH <password> first");
+        
       } catch (IOException e) {
         System.out.println("Handling client connection failed (IOException) - " + e.getMessage());
+        return;
       }
     }
   }

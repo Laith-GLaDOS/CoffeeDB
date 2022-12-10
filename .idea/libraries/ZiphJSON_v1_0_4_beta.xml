@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ZiphJSON-v1.0.4-beta">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/service/lib/ZiphJSON-v1.0.4-beta.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
