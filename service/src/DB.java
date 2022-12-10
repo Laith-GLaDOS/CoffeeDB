@@ -1,14 +1,16 @@
-import java.util.ArrayList;
+/*import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.IOException;*/
+import ziph.*;
 
 public class DB {
-  public static List<KeyValue> data = new ArrayList<>();
-  public static int loadFromFile() {
+  public static JSONObject data = new JSONObject();
+  //public static List<KeyValue> data = new ArrayList<>();
+  /*public static int loadFromFile() {
     File dataFile = new File("./coffeedb_data");
     try {
       Scanner dataFileReader = new Scanner(dataFile);
@@ -52,5 +54,5 @@ public class DB {
       return 1;
     }
     return 0;
-  }
+  }*/
 }
