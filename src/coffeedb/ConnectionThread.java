@@ -30,6 +30,11 @@ public class ConnectionThread extends Thread {
               response.set("message", "Action is missing");
               response.setNull("payload");
               writer.println(response.toJSONString());
+            } else if (!(request.get("action") instanceof String)) {
+              response.set("status", "error");
+              response.set("message", "Action must be a string");
+              response.setNull("payload");
+              writer.println(response.toJSONString());
             } else if (!request.get("action").equals("authenticate")) {
               response.set("status", "error");
               response.set("message", "Please authenticate first");
@@ -57,6 +62,22 @@ public class ConnectionThread extends Thread {
               response.setNull("payload");
               writer.println(response.toJSONString());
             }
+          else if (request.get("action") == null) {
+            response.set("status", "error");
+            response.set("message", "Action is missing");
+            response.setNull("payload");
+            writer.println(response.toJSONString());
+          } else if (!(request.get("action") instanceof String)) {
+            response.set("status", "error");
+            response.set("message", "Action must be a string");
+            response.setNull("payload");
+            writer.println(response.toJSONString());
+          } else if (!request.get("action").equals("authenticate")) {
+            response.set("status", "error");
+            response.set("message", "Already authenticated");
+            response.setNull("payload");
+            writer.println(response.toJSONString());
+          }
         } catch (InvalidJSONException e) {
           JSONObject response = new JSONObject();
           response.set("status", "error");
