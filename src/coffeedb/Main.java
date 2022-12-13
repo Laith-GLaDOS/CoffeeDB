@@ -1,6 +1,7 @@
 package coffeedb;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import ziph.InvalidJSONException;
 
 public class Main {
@@ -28,5 +29,18 @@ public class Main {
 
     Logger.log(LogType.NORMAL, new StringBuilder("port = ").append(config.data.port).toString());
     Logger.log(LogType.NORMAL, new StringBuilder("password = ").append(config.data.password).toString());
+
+    try (ServerSocket server = new ServerSocket(config.data.port)) {
+      Logger.log(LogType.NORMAL, "Server started");
+      while (true) try {
+        ConnectionThread thread = new ConnectionThread(server.accept(), config.data.password);
+        thread.start();
+        Logger.log(LogType.NORMAL, "Connection accepted");
+      } catch (IOException e) {
+        Logger.log(LogType.ERROR, "Accepting client connection failed (IOException) - " + e.getMessage());
+      }
+    } catch (IOException e) {
+      Logger.log(LogType.ERROR, "Server failed to start (IOException) - " + e.getMessage());
+    }
   }
 }
