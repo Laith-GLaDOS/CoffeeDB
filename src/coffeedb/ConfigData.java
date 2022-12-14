@@ -1,6 +1,6 @@
 package coffeedb;
 
-class ConfigData {
+public class ConfigData {
   public int port;
   public String password;
 
