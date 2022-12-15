@@ -39,6 +39,11 @@ public class Config {
     if (!(configObject.get("password") instanceof String))
       throw new InvalidConfigException();
 
-    this.data = new ConfigData((int)configObject.get("port"), (String)configObject.get("password"));
+    if (configObject.get("dbFilePath") != null) {
+      if (!(configObject.get("dbFilePath") instanceof String))
+        throw new InvalidConfigException();
+    } else configObject.set("dbFilePath", "./coffeedb_data.json");
+
+    this.data = new ConfigData((int)configObject.get("port"), (String)configObject.get("password"), (String)configObject.get("dbFilePath"));
   }
 }

@@ -27,13 +27,14 @@ public class Main {
       return;
     }
 
-    Logger.log(LogType.NORMAL, new StringBuilder("port = ").append(config.data.port).toString());
-    Logger.log(LogType.NORMAL, new StringBuilder("password = ").append(config.data.password).toString());
+    Logger.log(LogType.NORMAL, new StringBuilder("port = ").append(config.data.Port()).toString());
+    Logger.log(LogType.NORMAL, new StringBuilder("password = ").append(config.data.Password()).toString());
+    Logger.log(LogType.NORMAL, new StringBuilder("dbFilePath = ").append(config.data.DbFilePath()).toString());
 
-    try (ServerSocket server = new ServerSocket(config.data.port)) {
+    try (ServerSocket server = new ServerSocket(config.data.Port())) {
       Logger.log(LogType.NORMAL, "Server started");
       while (true) try {
-        ConnectionThread thread = new ConnectionThread(server.accept(), config.data.password);
+        ConnectionThread thread = new ConnectionThread(server.accept(), config.data.Password(), config.data.DbFilePath());
         thread.start();
         Logger.log(LogType.NORMAL, "Connection accepted");
       } catch (IOException e) {
