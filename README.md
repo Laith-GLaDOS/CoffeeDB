@@ -1,6 +1,6 @@
 # Laith-GLaDOS/CoffeeDB
 CoffeeDB is a blazingly-fast key-value store  
-It does all key-value operations in RAM but it saves changes to disk after committing in RAM so that when CoffeeDB is restarted, the keys persist
+It does all key-value operations in RAM for extra speed but it persists keys in disk too
 
 # Notes:
  - This is a WIP (Work In Progress)
