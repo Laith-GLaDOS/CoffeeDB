@@ -31,6 +31,20 @@ public class Main {
     Logger.log(LogType.NORMAL, new StringBuilder("password = ").append(config.data.Password()).toString());
     Logger.log(LogType.NORMAL, new StringBuilder("dbFilePath = ").append(config.data.DbFilePath()).toString());
 
+    Logger.log(LogType.NORMAL, new StringBuilder("Loading database (").append(config.data.DbFilePath()).append(")...").toString());
+    try {
+      DB.load(config.data.DbFilePath());
+    } catch (IOException e) {
+      Logger.log(LogType.ERROR, new StringBuilder("IO error while reading database file - ").append(e.getMessage()).toString());
+      return;
+    } catch (InvalidJSONException e) {
+      Logger.log(LogType.ERROR, "Database file has invalid JSON");
+      return;
+    } catch (DataFileNotFoundException e) {
+      Logger.log(LogType.ERROR, "Database file not found, please create one and add '{}' to it's contents and specify it's path in your config");
+      return;
+    }
+
     try (ServerSocket server = new ServerSocket(config.data.Port())) {
       Logger.log(LogType.NORMAL, "Server started");
       while (true) try {
