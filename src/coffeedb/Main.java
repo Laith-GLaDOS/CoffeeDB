@@ -34,7 +34,7 @@ public class Main {
     try (ServerSocket server = new ServerSocket(config.data.Port())) {
       Logger.log(LogType.NORMAL, "Server started");
       while (true) try {
-        ConnectionThread thread = new ConnectionThread(server.accept(), config.data.Password(), config.data.DbFilePath());
+        ConnectionThread thread = new ConnectionThread(server.accept(), config.data.Password());
         thread.start();
         Logger.log(LogType.NORMAL, "Connection accepted");
       } catch (IOException e) {

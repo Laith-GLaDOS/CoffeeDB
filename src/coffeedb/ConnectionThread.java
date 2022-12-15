@@ -7,12 +7,10 @@ import ziph.*;
 public class ConnectionThread extends Thread {
   private final Socket socket;
   private final String password;
-  private final String dbFilePath;
 
-  public ConnectionThread(Socket socket, String password, String dbFilePath) {
+  public ConnectionThread(Socket socket, String password) {
     this.socket = socket;
     this.password = password;
-    this.dbFilePath = dbFilePath;
   }
 
   public void run() {
