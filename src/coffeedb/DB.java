@@ -4,18 +4,18 @@ import ziph.*;
 import java.io.*;
 
 public class DB {
-  public JSONObject data;
+  public static JSONObject data = new JSONObject();
 
-  private File dataFile;
+  private static File dataFile;
 
-  public DB(String dbFilePath) throws IOException, InvalidJSONException, DataFileNotFoundException {
-    this.dataFile = new File(dbFilePath);
+  public static void load(String dbFilePath) throws IOException, InvalidJSONException, DataFileNotFoundException {
+    DB.dataFile = new File(dbFilePath);
 
     StringBuilder dbStringBuilder = new StringBuilder();
     String currentLine;
 
     try {
-      FileReader dFr = new FileReader(this.dataFile); // dfr stands for data file reader
+      FileReader dFr = new FileReader(DB.dataFile); // dfr stands for data file reader
       BufferedReader dFrBr = new BufferedReader(dFr); // dfrbr stands for data file reader buffered reader
 
       while ((currentLine = dFrBr.readLine()) != null)
@@ -27,12 +27,12 @@ public class DB {
       throw new DataFileNotFoundException();
     }
 
-    this.data = new JSONObjectFromString(dbStringBuilder.toString());
+    DB.data = new JSONObjectFromString(dbStringBuilder.toString());
   }
 
-  public void save() throws IOException {
-    FileWriter dataFileWriter = new FileWriter(this.dataFile);
-    dataFileWriter.write(this.data.toJSONString());
+  public static void save() throws IOException {
+    FileWriter dataFileWriter = new FileWriter(DB.dataFile);
+    dataFileWriter.write(DB.data.toJSONString());
     dataFileWriter.close();
   }
 }
