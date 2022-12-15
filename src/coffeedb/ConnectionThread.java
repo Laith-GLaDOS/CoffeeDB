@@ -77,6 +77,9 @@ public class ConnectionThread extends Thread {
             response.set("message", "Already authenticated");
             response.setNull("payload");
             writer.println(response.toJSONString());
+          } else {
+            response = (new RequestHandler(request)).getResponse();
+            writer.println(response.toJSONString());
           }
         } catch (InvalidJSONException e) {
           JSONObject response = new JSONObject();
@@ -85,7 +88,6 @@ public class ConnectionThread extends Thread {
           response.setNull("payload");
           writer.println(response.toJSONString());
         }
-        
       } catch (IOException e) {
         System.out.println("Handling client connection failed (IOException) - " + e.getMessage());
         return;
